@@ -1,47 +1,45 @@
-# TypeScript Next.js example
+# Grocery List App
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
+This is a simple Grocery List application built with Next.js and React.
 
-## Deploy your own
+This is the implementation for instructions version 5b8d0fd276b6d288905ed2f63a934e057e8feca2.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-typescript)
+## Features
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript&project-name=with-typescript&repository-name=with-typescript)
+- Add grocery items to the list.
+- Mark items as purchased.
+- Remove items from the list.
 
-## How to use it?
+The back-end is keeping the list in memory, so there's no data persistence.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## Folder Structure
 
-```bash
-npx create-next-app --example with-typescript with-typescript-app
-```
+The project has the following folder structure:
 
-```bash
-yarn create next-app --example with-typescript with-typescript-app
-```
+   - /components: Contains reusable React components.
+   - /pages: Contains Next.js pages and API routes.
+   - /styles: Contains CSS styles for the components using tailwind css.
 
-```bash
-pnpm create next-app --example with-typescript with-typescript-app
-```
+## Getting Started
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+To get started with the project, follow the steps below:
 
-## Notes
+   - Clone the repository: ```git clone git@github.com:pedropaf/grocery-list.git```
+   - Install the dependencies: ```cd grocery-list && yarn install```
+   - Run the development server: ```yarn dev```
 
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
+The application should now be running on http://localhost:3000.
 
-```
-npm install --save-dev typescript
-```
+## Building the Project
 
-To enable TypeScript's features, we install the type declarations for React and Node.
+To build the project for production, use the following command: ```yarn build```
 
-```
-npm install --save-dev @types/react @types/react-dom @types/node
-```
+The production-ready files will be generated in the .next folder.
 
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
+## Running Tests
 
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
+To run the tests for the project, use the following command: ```yarn test```.
 
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
+The tests will be executed, and the results will be displayed in the console.
+
+That's it! You now have the project set up and ready to use.
