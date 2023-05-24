@@ -13,7 +13,7 @@ const GroceryList: React.FC<GroceryListProps> = ({
   togglePurchased,
   removeItem,
 }) => (
-  <div>
+  <div data-testid="grocery-list">
     {items.map((item, index) => (
       <GroceryItem
         key={index}

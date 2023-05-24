@@ -17,7 +17,7 @@ const GroceryItem: React.FC<GroceryItemProps> = ({
   index,
 }) => {
   return (
-    <div className="flex items-center justify-between mb-2">
+    <div className="flex items-center justify-between mb-2" data-testid={`item-${index}`}>
       <div
         onClick={togglePurchased}
         className={`${

@@ -1,33 +1,65 @@
-import React, { useState } from "react";
-import { FaPlus } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { FaPlus } from "react-icons/fa";
 import GroceryList from "../components/GroceryList";
-import { GroceryItem } from "../pages/api/grocery";
+import { GroceryItem } from "./api/grocery";
 
-export default function IndexPage() {
+const IndexPage: React.FC = () => {
   const [groceries, setGroceries] = useState<GroceryItem[]>([]);
-  const [newItem, setNewItem] = useState('');
+  const [newItem, setNewItem] = useState("");
+
+  useEffect(() => {
+    fetch("/api/grocery")
+      .then((response) => response.json())
+      .then((data) => setGroceries(data))
+      .catch((error) => console.error("Error fetching groceries:", error));
+  }, []);
 
   const addItem = (event: React.FormEvent) => {
     event.preventDefault();
-    if (newItem.trim() === '') return;
-    const updatedGroceries = [
-      ...groceries,
-      { item: newItem, purchased: false }
-    ];
-    setGroceries(updatedGroceries);
-    setNewItem('');
-  }
+    if (newItem.trim() === "") return;
+
+    fetch("/api/grocery", {
+      method: "POST",
+      body: JSON.stringify({ item: newItem, purchased: false }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setGroceries([...groceries, data]))
+      .catch((error) => console.error("Error adding grocery:", error));
+
+    setNewItem("");
+  };
 
   const removeItem = (index: number) => {
-    const updatedGroceries = groceries.filter((item, i) => i !== index);
-    setGroceries(updatedGroceries);
-  }
+    fetch(`/api/grocery/${index}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        const updatedGroceries = [...groceries];
+        updatedGroceries.splice(index, 1);
+        setGroceries(updatedGroceries);
+      })
+      .catch((error) => console.error("Error removing item:", error));
+  };
 
   const togglePurchased = (index: number) => {
     const updatedGroceries = [...groceries];
     updatedGroceries[index].purchased = !updatedGroceries[index].purchased;
-    setGroceries(updatedGroceries);
-  }
+
+    fetch(`/api/grocery/${index}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedGroceries[index]),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(() => setGroceries(updatedGroceries))
+      .catch((error) =>
+        console.error("Error toggling purchased status:", error)
+      );
+  };
 
   return (
     <>
@@ -43,13 +75,23 @@ export default function IndexPage() {
             value={newItem}
             onChange={(e) => setNewItem(e.target.value)}
           />
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded" aria-label="Add Item">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded"
+            aria-label="Add Item"
+          >
             <FaPlus />
           </button>
         </form>
-        <GroceryList items={groceries} togglePurchased={togglePurchased} removeItem={removeItem} />
+        <GroceryList
+          items={groceries}
+          togglePurchased={togglePurchased}
+          removeItem={removeItem}
+        />
       </div>
       <div className="w-full h-15 bg-blue-600" />
     </>
-  )
-}
+  );
+};
+
+export default IndexPage;

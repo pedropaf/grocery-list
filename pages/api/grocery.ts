@@ -1,4 +1,4 @@
-let groceryList = [];
+let groceryList: GroceryItem[] = [];
 
 export type GroceryItem = {
   item: string;
@@ -13,22 +13,29 @@ export default function handler(req, res) {
       res.status(200).json(groceryList);
       break;
     case 'POST':
-      const { item, action } = req.body;
-      if (action === 'add') {
-        groceryList.push({ item, purchased: false });
-      } else if (action === 'delete') {
-        groceryList = groceryList.filter((groceryItem) => groceryItem.item !== item);
-      } else if (action === 'toggle') {
-        groceryList = groceryList.map((groceryItem) =>
-          groceryItem.item === item
-            ? { ...groceryItem, purchased: !groceryItem.purchased }
-            : groceryItem
-        );
+      const { item } = req.body;
+      const newItem = { item, purchased: false };
+      if (method === 'POST') {
+        groceryList.push(newItem);
       }
+      res.status(200).json(newItem);
+      break;
+    case 'PUT':
+      const { item: toggleItem } = req.body || {};
+      groceryList = groceryList.map((groceryItem) =>
+        groceryItem.item === toggleItem
+          ? { ...groceryItem, purchased: !groceryItem.purchased }
+          : groceryItem
+      );
+      res.status(200).json(groceryList);
+      break;
+    case 'DELETE':
+      const { item: deleteItem } = req.body;
+      groceryList = groceryList.filter((groceryItem) => groceryItem.item !== deleteItem);
       res.status(200).json(groceryList);
       break;
     default:
-      res.setHeader('Allow', ['GET', 'POST']);
+      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
